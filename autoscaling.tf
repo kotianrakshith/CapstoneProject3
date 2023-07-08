@@ -3,6 +3,17 @@ resource "aws_launch_configuration" "my_config" {
   image_id        = "ami-06ca3ca175f37dd66"
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.my_sg.id]
+  block_device_mappings {
+    device_name = "/dev/sda1"
+    ebs {
+      volume_size = 8
+      volume_type = "gp2"
+    }
+  }
+  network_interfaces {
+    associate_public_ip_address = true
+    security_groups = [aws_security_group.my_sg.id]
+  }
 }
 
 resource "aws_autoscaling_group" "my_asg" {
