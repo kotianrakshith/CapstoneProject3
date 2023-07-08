@@ -19,3 +19,16 @@ resource "aws_autoscaling_group" "my_asg" {
     id      = aws_launch_template.my_template.id
   }
 }
+
+resource "aws_autoscaling_policy" "my_as_policy" {
+name = "capstone_as_policy"
+policy_type = "TargetTrackingScaling"
+autoscaling_group_name = aws_autoscaling_group.my_asg.name
+estimated_instance_warmup = 200
+target_tracking_configuration {
+predefined_metric_specification {
+predefined_metric_type = "ASGAverageCPUUtilization"
+}
+    target_value = "20"
+}
+}
